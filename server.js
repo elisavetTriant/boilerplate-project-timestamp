@@ -24,6 +24,10 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// returning current date and time if empty... 
+app.get("/api/timestamp/", function (req, res) {
+  res.json({'unix':Date.now(), 'utc':Date()});
+});
 
 
 // listen for requests :)
