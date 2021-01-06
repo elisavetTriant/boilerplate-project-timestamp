@@ -29,6 +29,22 @@ app.get("/api/timestamp/", function (req, res) {
   res.json({'unix':Date.now(), 'utc':Date()});
 });
 
+// returning current date and time accepting either unix or valid date, or error otherwise... 
+app.get("/api/timestamp/:date", (req, res) => {
+  let dateString = req.params.date;
+
+  if (!isNaN(Date.parse(dateString))) {
+    if (/\d{5,}/.test(dateString)) {
+      let dateInt = parseInt(dateString);
+      res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
+    } else {
+      let dateObject = new Date(dateString);
+      res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString() });
+    }
+  } else {
+    res.json({ error: "Invalid Date" });
+  }
+});
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
